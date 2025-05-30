@@ -1,0 +1,784 @@
+{
+    "C:\\DumpStack.log": {
+        "path": "C:\\DumpStack.log",
+        "name": "DumpStack.log",
+        "size_mb": 0.0078125,
+        "classification": "Error",
+        "summary": "Error classifying: HTTPConnectionPool(host='localhost', port=11434): Read timed out. (read timeout=30)",
+        "keywords": [
+            "error"
+        ],
+        "scan_timestamp": 1748609536.9733756
+    },
+    "C:\\DumpStack.log.tmp": {
+        "path": "C:\\DumpStack.log.tmp",
+        "name": "DumpStack.log.tmp",
+        "size_mb": 0.0078125,
+        "classification": "Unknown",
+        "summary": "Failed to classify with LLM",
+        "keywords": [
+            "error",
+            "classification-failed"
+        ],
+        "scan_timestamp": 1748609563.959806
+    },
+    "C:\\end": {
+        "path": "C:\\end",
+        "name": "end",
+        "size_mb": 0.0,
+        "classification": "Binary file",
+        "summary": "A binary file containing unreadable data, likely specific to a certain application or system.",
+        "keywords": [],
+        "scan_timestamp": 1748609582.0779295
+    },
+    "C:\\nsispromotion_log.txt": {
+        "path": "C:\\nsispromotion_log.txt",
+        "name": "nsispromotion_log.txt",
+        "size_mb": 0.000270843505859375,
+        "classification": "Error",
+        "summary": "Error classifying: HTTPConnectionPool(host='localhost', port=11434): Read timed out. (read timeout=30)",
+        "keywords": [
+            "error"
+        ],
+        "scan_timestamp": 1748609614.129825
+    },
+    "C:\\$AV_ASW\\$VAULT\\vault.db": {
+        "path": "C:\\$AV_ASW\\$VAULT\\vault.db",
+        "name": "vault.db",
+        "size_mb": 0.9921875,
+        "classification": "SQLite3 Database file",
+        "summary": "Contains SQLite database entries in binary format.",
+        "keywords": [
+            "SQLite",
+            "database",
+            "binary",
+            "entries"
+        ],
+        "scan_timestamp": 1748609642.1718855
+    },
+    "C:\\avast! sandbox\\snx_rhive": {
+        "path": "C:\\avast! sandbox\\snx_rhive",
+        "name": "snx_rhive",
+        "size_mb": 0.0625,
+        "classification": "Error",
+        "summary": "Error classifying: HTTPConnectionPool(host='localhost', port=11434): Read timed out. (read timeout=30)",
+        "keywords": [
+            "error"
+        ],
+        "scan_timestamp": 1748609674.222383
+    },
+    "C:\\avast! sandbox\\snx_rhive.LOG1": {
+        "path": "C:\\avast! sandbox\\snx_rhive.LOG1",
+        "name": "snx_rhive.LOG1",
+        "size_mb": 0.03125,
+        "classification": "Windows Registry File (.REG)",
+        "summary": "This appears to be a Windows Registry file, possibly created by the Avast Sandbox process.",
+        "keywords": [
+            ".REG",
+            "Avast Sandbox",
+            "Registry",
+            "Software",
+            "Machine",
+            "Microsoft"
+        ],
+        "scan_timestamp": 1748609704.586462
+    },
+    "C:\\avast! sandbox\\snx_rhive.LOG2": {
+        "path": "C:\\avast! sandbox\\snx_rhive.LOG2",
+        "name": "snx_rhive.LOG2",
+        "size_mb": 0.04296875,
+        "classification": "Registry File (.REG)",
+        "summary": "A .REG file containing registry settings, possibly related to Avast sandbox.",
+        "keywords": [
+            ".REG",
+            ".X",
+            "Avast",
+            "sandbox",
+            "registry",
+            "file"
+        ],
+        "scan_timestamp": 1748609733.4487305
+    },
+    "C:\\avast! sandbox\\snx_rhive{af4689a1-3d41-11f0-971e-00e18cfc54a8}.TM.blf": {
+        "path": "C:\\avast! sandbox\\snx_rhive{af4689a1-3d41-11f0-971e-00e18cfc54a8}.TM.blf",
+        "name": "snx_rhive{af4689a1-3d41-11f0-971e-00e18cfc54a8}.TM.blf",
+        "size_mb": 0.0625,
+        "classification": "Binary File (Thunderbird Email Message, presumably)",
+        "summary": "This file appears to be a Thunderbird email message. It seems to contain encoded data and metadata specific to the email.",
+        "keywords": [
+            "Email",
+            "Thunderbird",
+            "Binary file",
+            "Encoded Data",
+            "Metadata"
+        ],
+        "scan_timestamp": 1748609763.822454
+    },
+    "C:\\avast! sandbox\\snx_rhive{af4689a1-3d41-11f0-971e-00e18cfc54a8}.TMContainer00000000000000000001.regtrans-ms": {
+        "path": "C:\\avast! sandbox\\snx_rhive{af4689a1-3d41-11f0-971e-00e18cfc54a8}.TMContainer00000000000000000001.regtrans-ms",
+        "name": "snx_rhive{af4689a1-3d41-11f0-971e-00e18cfc54a8}.TMContainer00000000000000000001.regtrans-ms",
+        "size_mb": 0.5,
+        "classification": "Registry File (.reg)",
+        "summary": "This appears to be a Windows Registry file with binary content.",
+        "keywords": [
+            "Registry",
+            ".reg",
+            "Windows",
+            "Binary",
+            "File"
+        ],
+        "scan_timestamp": 1748609786.8092828
+    },
+    "C:\\avast! sandbox\\snx_rhive{af4689a1-3d41-11f0-971e-00e18cfc54a8}.TMContainer00000000000000000002.regtrans-ms": {
+        "path": "C:\\avast! sandbox\\snx_rhive{af4689a1-3d41-11f0-971e-00e18cfc54a8}.TMContainer00000000000000000002.regtrans-ms",
+        "name": "snx_rhive{af4689a1-3d41-11f0-971e-00e18cfc54a8}.TMContainer00000000000000000002.regtrans-ms",
+        "size_mb": 0.5,
+        "classification": "Registry file (.reg), Windows system configuration data",
+        "summary": "This is a Windows registry file, used to save settings and options for the operating system or applications.",
+        "keywords": [
+            "registry",
+            "Windows",
+            "system",
+            "configuration",
+            "file"
+        ],
+        "scan_timestamp": 1748609813.4946148
+    },
+    "C:\\DRIVERS\\Intel_Bluetooth_Bluetooth_DCH\\InstallStep.txt": {
+        "path": "C:\\DRIVERS\\Intel_Bluetooth_Bluetooth_DCH\\InstallStep.txt",
+        "name": "InstallStep.txt",
+        "size_mb": 0.0005321502685546875,
+        "classification": "Error",
+        "summary": "Error classifying: HTTPConnectionPool(host='localhost', port=11434): Read timed out. (read timeout=30)",
+        "keywords": [
+            "error"
+        ],
+        "scan_timestamp": 1748609845.5632212
+    },
+    "C:\\DRIVERS\\Intel_Bluetooth_Bluetooth_DCH\\Install_innCMD.bat": {
+        "path": "C:\\DRIVERS\\Intel_Bluetooth_Bluetooth_DCH\\Install_innCMD.bat",
+        "name": "Install_innCMD.bat",
+        "size_mb": 6.29425048828125e-05,
+        "classification": "Error",
+        "summary": "Error classifying: HTTPConnectionPool(host='localhost', port=11434): Read timed out. (read timeout=30)",
+        "keywords": [
+            "error"
+        ],
+        "scan_timestamp": 1748609877.6217675
+    },
+    "C:\\DRIVERS\\Intel_Bluetooth_Bluetooth_DCH\\setup.bat": {
+        "path": "C:\\DRIVERS\\Intel_Bluetooth_Bluetooth_DCH\\setup.bat",
+        "name": "setup.bat",
+        "size_mb": 2.6702880859375e-05,
+        "classification": "Batch file (Script written in Bat language)",
+        "summary": "This script is used to install drivers using the 'pnputil' utility on a system with provided .inf files.",
+        "keywords": [
+            "batch file",
+            "script",
+            "pnputil",
+            "drivers",
+            ".inf"
+        ],
+        "scan_timestamp": 1748609906.2993357
+    },
+    "C:\\DRIVERS\\Intel_Bluetooth_Bluetooth_DCH\\ibtsiva\\ibtusb_siva_ext.cat": {
+        "path": "C:\\DRIVERS\\Intel_Bluetooth_Bluetooth_DCH\\ibtsiva\\ibtusb_siva_ext.cat",
+        "name": "ibtusb_siva_ext.cat",
+        "size_mb": 0.011317253112792969,
+        "classification": "Error",
+        "summary": "Error classifying: HTTPConnectionPool(host='localhost', port=11434): Read timed out. (read timeout=30)",
+        "keywords": [
+            "error"
+        ],
+        "scan_timestamp": 1748609938.3608458
+    },
+    "C:\\DRIVERS\\Intel_Bluetooth_Bluetooth_DCH\\ibtsiva\\ibtusb_siva_ext.inf": {
+        "path": "C:\\DRIVERS\\Intel_Bluetooth_Bluetooth_DCH\\ibtsiva\\ibtusb_siva_ext.inf",
+        "name": "ibtusb_siva_ext.inf",
+        "size_mb": 0.0055141448974609375,
+        "classification": "Error",
+        "summary": "Error classifying: HTTPConnectionPool(host='localhost', port=11434): Read timed out. (read timeout=30)",
+        "keywords": [
+            "error"
+        ],
+        "scan_timestamp": 1748609970.4200747
+    },
+    "C:\\DRIVERS\\Intel_Bluetooth_Bluetooth_DCH\\SFP\\ibtusb.cat": {
+        "path": "C:\\DRIVERS\\Intel_Bluetooth_Bluetooth_DCH\\SFP\\ibtusb.cat",
+        "name": "ibtusb.cat",
+        "size_mb": 0.009866714477539062,
+        "classification": "Error",
+        "summary": "Error classifying: HTTPConnectionPool(host='localhost', port=11434): Read timed out. (read timeout=30)",
+        "keywords": [
+            "error"
+        ],
+        "scan_timestamp": 1748610002.487182
+    },
+    "C:\\DRIVERS\\Intel_Bluetooth_Bluetooth_DCH\\SFP\\ibtusb.inf": {
+        "path": "C:\\DRIVERS\\Intel_Bluetooth_Bluetooth_DCH\\SFP\\ibtusb.inf",
+        "name": "ibtusb.inf",
+        "size_mb": 0.0335845947265625,
+        "classification": "INF file (Windows driver)",
+        "summary": "This INF file is for installing the Intel Wireless Bluetooth driver.",
+        "keywords": [
+            "INF file",
+            "Intel",
+            "Wireless",
+            "Bluetooth",
+            "driver",
+            "Windows"
+        ],
+        "scan_timestamp": 1748610034.4632843
+    },
+    "C:\\DRIVERS\\Intel_Bluetooth_Bluetooth_DCH\\WSP\\ibtusb.cat": {
+        "path": "C:\\DRIVERS\\Intel_Bluetooth_Bluetooth_DCH\\WSP\\ibtusb.cat",
+        "name": "ibtusb.cat",
+        "size_mb": 0.00966644287109375,
+        "classification": "Error",
+        "summary": "Error classifying: HTTPConnectionPool(host='localhost', port=11434): Read timed out. (read timeout=30)",
+        "keywords": [
+            "error"
+        ],
+        "scan_timestamp": 1748610066.5251458
+    },
+    "C:\\DRIVERS\\Intel_Bluetooth_Bluetooth_DCH\\WSP\\ibtusb.inf": {
+        "path": "C:\\DRIVERS\\Intel_Bluetooth_Bluetooth_DCH\\WSP\\ibtusb.inf",
+        "name": "ibtusb.inf",
+        "size_mb": 0.0335845947265625,
+        "classification": "Error",
+        "summary": "Error classifying: HTTPConnectionPool(host='localhost', port=11434): Read timed out. (read timeout=30)",
+        "keywords": [
+            "error"
+        ],
+        "scan_timestamp": 1748610098.5709186
+    },
+    "C:\\Flashpoint\\.preferences.defaults.json": {
+        "path": "C:\\Flashpoint\\.preferences.defaults.json",
+        "name": ".preferences.defaults.json",
+        "size_mb": 0.007111549377441406,
+        "classification": "Error",
+        "summary": "Error classifying: HTTPConnectionPool(host='localhost', port=11434): Read timed out. (read timeout=30)",
+        "keywords": [
+            "error"
+        ],
+        "scan_timestamp": 1748610130.619254
+    },
+    "C:\\Flashpoint\\extConfig.json": {
+        "path": "C:\\Flashpoint\\extConfig.json",
+        "name": "extConfig.json",
+        "size_mb": 0.000385284423828125,
+        "classification": "Error",
+        "summary": "Error classifying: HTTPConnectionPool(host='localhost', port=11434): Read timed out. (read timeout=30)",
+        "keywords": [
+            "error"
+        ],
+        "scan_timestamp": 1748610162.670618
+    },
+    "C:\\Flashpoint\\Flashpoint.lnk": {
+        "path": "C:\\Flashpoint\\Flashpoint.lnk",
+        "name": "Flashpoint.lnk",
+        "size_mb": 0.000774383544921875,
+        "classification": "Windows executable file",
+        "summary": "Flashpoint Launcher for the Flashpoint application",
+        "keywords": [
+            "Flashpoint",
+            "Launcher",
+            "EXE"
+        ],
+        "scan_timestamp": 1748610185.4386623
+    },
+    "C:\\Flashpoint\\preferences.json": {
+        "path": "C:\\Flashpoint\\preferences.json",
+        "name": "preferences.json",
+        "size_mb": 0.007695198059082031,
+        "classification": "Error",
+        "summary": "Error classifying: HTTPConnectionPool(host='localhost', port=11434): Read timed out. (read timeout=30)",
+        "keywords": [
+            "error"
+        ],
+        "scan_timestamp": 1748610217.5171332
+    },
+    "C:\\Flashpoint\\version.txt": {
+        "path": "C:\\Flashpoint\\version.txt",
+        "name": "version.txt",
+        "size_mb": 3.337860107421875e-05,
+        "classification": "Error",
+        "summary": "Error classifying: HTTPConnectionPool(host='localhost', port=11434): Read timed out. (read timeout=30)",
+        "keywords": [
+            "error"
+        ],
+        "scan_timestamp": 1748610249.5595691
+    },
+    "C:\\Flashpoint\\Components\\core-configuration": {
+        "path": "C:\\Flashpoint\\Components\\core-configuration",
+        "name": "core-configuration",
+        "size_mb": 9.34600830078125e-05,
+        "classification": "Error",
+        "summary": "Error classifying: HTTPConnectionPool(host='localhost', port=11434): Read timed out. (read timeout=30)",
+        "keywords": [
+            "error"
+        ],
+        "scan_timestamp": 1748610281.6364288
+    },
+    "C:\\Flashpoint\\Components\\core-credits": {
+        "path": "C:\\Flashpoint\\Components\\core-credits",
+        "name": "core-credits",
+        "size_mb": 3.528594970703125e-05,
+        "classification": "Error",
+        "summary": "Error classifying: HTTPConnectionPool(host='localhost', port=11434): Read timed out. (read timeout=30)",
+        "keywords": [
+            "error"
+        ],
+        "scan_timestamp": 1748610313.684733
+    },
+    "C:\\Flashpoint\\Components\\core-database": {
+        "path": "C:\\Flashpoint\\Components\\core-database",
+        "name": "core-database",
+        "size_mb": 4.1961669921875e-05,
+        "classification": "Database file (SQLite format)",
+        "summary": "This appears to be a SQLite database file for Flashpoint, likely containing structured data used by the program.",
+        "keywords": [
+            "SQLite",
+            "Flashpoint",
+            "database",
+            "Data",
+            "flashpoint.sqlite"
+        ],
+        "scan_timestamp": 1748610341.6873407
+    },
+    "C:\\Flashpoint\\Components\\core-launcher": {
+        "path": "C:\\Flashpoint\\Components\\core-launcher",
+        "name": "core-launcher",
+        "size_mb": 0.00452423095703125,
+        "classification": "Error",
+        "summary": "Error classifying: HTTPConnectionPool(host='localhost', port=11434): Read timed out. (read timeout=30)",
+        "keywords": [
+            "error"
+        ],
+        "scan_timestamp": 1748610373.735427
+    },
+    "C:\\Flashpoint\\Components\\core-logos": {
+        "path": "C:\\Flashpoint\\Components\\core-logos",
+        "name": "core-logos",
+        "size_mb": 0.0031890869140625,
+        "classification": "Error",
+        "summary": "Error classifying: HTTPConnectionPool(host='localhost', port=11434): Read timed out. (read timeout=30)",
+        "keywords": [
+            "error"
+        ],
+        "scan_timestamp": 1748611925.9614494
+    },
+    "C:\\Flashpoint\\Components\\core-manager": {
+        "path": "C:\\Flashpoint\\Components\\core-manager",
+        "name": "core-manager",
+        "size_mb": 6.29425048828125e-05,
+        "classification": "Error",
+        "summary": "Error classifying: HTTPConnectionPool(host='localhost', port=11434): Read timed out. (read timeout=30)",
+        "keywords": [
+            "error"
+        ],
+        "scan_timestamp": 1748611958.0095284
+    },
+    "C:\\Flashpoint\\Components\\core-server-automount": {
+        "path": "C:\\Flashpoint\\Components\\core-server-automount",
+        "name": "core-server-automount",
+        "size_mb": 0.00014019012451171875,
+        "classification": "Source Code (Node.js module)",
+        "summary": "This is a Node.js automount extension package for Flashpoint, containing the package configuration and compiled JavaScript file.",
+        "keywords": [
+            "Node.js",
+            "Flashpoint",
+            "Automount",
+            "package.json",
+            "ext.js",
+            "JavaScript"
+        ],
+        "scan_timestamp": 1748611988.6973708
+    },
+    "C:\\Flashpoint\\Components\\core-server-gamezip": {
+        "path": "C:\\Flashpoint\\Components\\core-server-gamezip",
+        "name": "core-server-gamezip",
+        "size_mb": 7.62939453125e-05,
+        "classification": "Error",
+        "summary": "Error classifying: HTTPConnectionPool(host='localhost', port=11434): Read timed out. (read timeout=30)",
+        "keywords": [
+            "error"
+        ],
+        "scan_timestamp": 1748612020.7457726
+    },
+    "C:\\Flashpoint\\Components\\core-server-legacy": {
+        "path": "C:\\Flashpoint\\Components\\core-server-legacy",
+        "name": "core-server-legacy",
+        "size_mb": 0.2047567367553711,
+        "classification": "Error",
+        "summary": "Error classifying: HTTPConnectionPool(host='localhost', port=11434): Read timed out. (read timeout=30)",
+        "keywords": [
+            "error"
+        ],
+        "scan_timestamp": 1748612052.8028996
+    },
+    "C:\\Flashpoint\\Components\\extension-analytics": {
+        "path": "C:\\Flashpoint\\Components\\extension-analytics",
+        "name": "extension-analytics",
+        "size_mb": 0.0002460479736328125,
+        "classification": "Error",
+        "summary": "Error classifying: HTTPConnectionPool(host='localhost', port=11434): Read timed out. (read timeout=30)",
+        "keywords": [
+            "error"
+        ],
+        "scan_timestamp": 1748612084.8397877
+    },
+    "C:\\Flashpoint\\Components\\extension-discord": {
+        "path": "C:\\Flashpoint\\Components\\extension-discord",
+        "name": "extension-discord",
+        "size_mb": 0.00025463104248046875,
+        "classification": "Error",
+        "summary": "Error classifying: HTTPConnectionPool(host='localhost', port=11434): Read timed out. (read timeout=30)",
+        "keywords": [
+            "error"
+        ],
+        "scan_timestamp": 1748612116.9002206
+    },
+    "C:\\Flashpoint\\Components\\extra-copyfolderstructure": {
+        "path": "C:\\Flashpoint\\Components\\extra-copyfolderstructure",
+        "name": "extra-copyfolderstructure",
+        "size_mb": 0.00011920928955078125,
+        "classification": "Error",
+        "summary": "Error classifying: HTTPConnectionPool(host='localhost', port=11434): Read timed out. (read timeout=30)",
+        "keywords": [
+            "error"
+        ],
+        "scan_timestamp": 1748612148.9537196
+    },
+    "C:\\Flashpoint\\Components\\extra-curlsdownloader": {
+        "path": "C:\\Flashpoint\\Components\\extra-curlsdownloader",
+        "name": "extra-curlsdownloader",
+        "size_mb": 0.00026988983154296875,
+        "classification": "Error",
+        "summary": "Error classifying: HTTPConnectionPool(host='localhost', port=11434): Read timed out. (read timeout=30)",
+        "keywords": [
+            "error"
+        ],
+        "scan_timestamp": 1748612731.9811344
+    },
+    "C:\\Flashpoint\\Components\\extra-fpcurator": {
+        "path": "C:\\Flashpoint\\Components\\extra-fpcurator",
+        "name": "extra-fpcurator",
+        "size_mb": 0.046909332275390625,
+        "classification": "Error",
+        "summary": "Error classifying: HTTPConnectionPool(host='localhost', port=11434): Read timed out. (read timeout=30)",
+        "keywords": [
+            "error"
+        ],
+        "scan_timestamp": 1748612764.0329804
+    },
+    "C:\\Flashpoint\\Components\\extra-s3bucketscraper": {
+        "path": "C:\\Flashpoint\\Components\\extra-s3bucketscraper",
+        "name": "extra-s3bucketscraper",
+        "size_mb": 5.340576171875e-05,
+        "classification": "Python script",
+        "summary": "A Python script for scraping data from Amazon S3 buckets.",
+        "keywords": [
+            "Python",
+            "S3 Bucket Scraper",
+            "scrapeS3.py",
+            "Amazon S3"
+        ],
+        "scan_timestamp": 1748612790.2678947
+    },
+    "C:\\Flashpoint\\Components\\extra-savesmanager": {
+        "path": "C:\\Flashpoint\\Components\\extra-savesmanager",
+        "name": "extra-savesmanager",
+        "size_mb": 8.392333984375e-05,
+        "classification": "Error",
+        "summary": "Error classifying: HTTPConnectionPool(host='localhost', port=11434): Read timed out. (read timeout=30)",
+        "keywords": [
+            "error"
+        ],
+        "scan_timestamp": 1748612822.319457
+    },
+    "C:\\Flashpoint\\Components\\extra-unityhtmlgenerator": {
+        "path": "C:\\Flashpoint\\Components\\extra-unityhtmlgenerator",
+        "name": "extra-unityhtmlgenerator",
+        "size_mb": 0.00010967254638671875,
+        "classification": "Error",
+        "summary": "Error classifying: HTTPConnectionPool(host='localhost', port=11434): Read timed out. (read timeout=30)",
+        "keywords": [
+            "error"
+        ],
+        "scan_timestamp": 1748612854.3566532
+    },
+    "C:\\Flashpoint\\Components\\extra-youtubetemplates": {
+        "path": "C:\\Flashpoint\\Components\\extra-youtubetemplates",
+        "name": "extra-youtubetemplates",
+        "size_mb": 0.0001163482666015625,
+        "classification": "Error",
+        "summary": "Error classifying: HTTPConnectionPool(host='localhost', port=11434): Read timed out. (read timeout=30)",
+        "keywords": [
+            "error"
+        ],
+        "scan_timestamp": 1748612886.4161909
+    },
+    "C:\\Flashpoint\\Components\\logoset-adobeblue": {
+        "path": "C:\\Flashpoint\\Components\\logoset-adobeblue",
+        "name": "logoset-adobeblue",
+        "size_mb": 0.0027570724487304688,
+        "classification": "Error",
+        "summary": "Error classifying: HTTPConnectionPool(host='localhost', port=11434): Read timed out. (read timeout=30)",
+        "keywords": [
+            "error"
+        ],
+        "scan_timestamp": 1748612918.470911
+    },
+    "C:\\Flashpoint\\Components\\logoset-macintosh": {
+        "path": "C:\\Flashpoint\\Components\\logoset-macintosh",
+        "name": "logoset-macintosh",
+        "size_mb": 0.0026874542236328125,
+        "classification": "Error",
+        "summary": "Error classifying: HTTPConnectionPool(host='localhost', port=11434): Read timed out. (read timeout=30)",
+        "keywords": [
+            "error"
+        ],
+        "scan_timestamp": 1748612950.513921
+    },
+    "C:\\Flashpoint\\Components\\logoset-millennium": {
+        "path": "C:\\Flashpoint\\Components\\logoset-millennium",
+        "name": "logoset-millennium",
+        "size_mb": 0.0027570724487304688,
+        "classification": "Error",
+        "summary": "Error classifying: HTTPConnectionPool(host='localhost', port=11434): Read timed out. (read timeout=30)",
+        "keywords": [
+            "error"
+        ],
+        "scan_timestamp": 1748612982.5862622
+    },
+    "C:\\Flashpoint\\Components\\logoset-oldschool": {
+        "path": "C:\\Flashpoint\\Components\\logoset-oldschool",
+        "name": "logoset-oldschool",
+        "size_mb": 0.0009164810180664062,
+        "classification": "Error",
+        "summary": "Error classifying: HTTPConnectionPool(host='localhost', port=11434): Read timed out. (read timeout=30)",
+        "keywords": [
+            "error"
+        ],
+        "scan_timestamp": 1748613014.639208
+    },
+    "C:\\Flashpoint\\Components\\playlist-1001games": {
+        "path": "C:\\Flashpoint\\Components\\playlist-1001games",
+        "name": "playlist-1001games",
+        "size_mb": 4.9591064453125e-05,
+        "classification": "JSON File (Data Configuration), associated with video games",
+        "summary": "This is a configuration file for a playlist containing 1001 video games",
+        "keywords": [
+            "playlist",
+            "1001VideoGames.json",
+            "video games",
+            "configuration",
+            "data",
+            "limiting preview size"
+        ],
+        "scan_timestamp": 1748613045.847625
+    },
+    "C:\\Flashpoint\\Components\\playlist-adultswim": {
+        "path": "C:\\Flashpoint\\Components\\playlist-adultswim",
+        "name": "playlist-adultswim",
+        "size_mb": 5.054473876953125e-05,
+        "classification": "JSON file containing a playlist for Adult Swim content",
+        "summary": "This file is a JSON formatted playlist of BestOfAdultSwim content.",
+        "keywords": [
+            "JSON",
+            "Playlist",
+            "AdultSwim",
+            "BestOfAdultSwim"
+        ],
+        "scan_timestamp": 1748613073.8866153
+    },
+    "C:\\Flashpoint\\Components\\playlist-animhalloffame": {
+        "path": "C:\\Flashpoint\\Components\\playlist-animhalloffame",
+        "name": "playlist-animhalloffame",
+        "size_mb": 5.340576171875e-05,
+        "classification": "Error",
+        "summary": "Error classifying: HTTPConnectionPool(host='localhost', port=11434): Read timed out. (read timeout=30)",
+        "keywords": [
+            "error"
+        ],
+        "scan_timestamp": 1748613105.9270458
+    },
+    "C:\\Flashpoint\\Components\\playlist-christmas": {
+        "path": "C:\\Flashpoint\\Components\\playlist-christmas",
+        "name": "playlist-christmas",
+        "size_mb": 4.863739013671875e-05,
+        "classification": "Error",
+        "summary": "Error classifying: HTTPConnectionPool(host='localhost', port=11434): Read timed out. (read timeout=30)",
+        "keywords": [
+            "error"
+        ],
+        "scan_timestamp": 1748613138.007623
+    },
+    "C:\\Flashpoint\\Components\\playlist-favorites": {
+        "path": "C:\\Flashpoint\\Components\\playlist-favorites",
+        "name": "playlist-favorites",
+        "size_mb": 4.482269287109375e-05,
+        "classification": "JSON file containing a list of favorite playlists",
+        "summary": "A JSON file that stores the favorites playlist data for an application",
+        "keywords": [
+            "JSON",
+            "playlist",
+            "favorites",
+            "Data",
+            "Playlists"
+        ],
+        "scan_timestamp": 1748613163.7014482
+    },
+    "C:\\Flashpoint\\Components\\playlist-firstgames": {
+        "path": "C:\\Flashpoint\\Components\\playlist-firstgames",
+        "name": "playlist-firstgames",
+        "size_mb": 5.245208740234375e-05,
+        "classification": "Error",
+        "summary": "Error classifying: HTTPConnectionPool(host='localhost', port=11434): Read timed out. (read timeout=30)",
+        "keywords": [
+            "error"
+        ],
+        "scan_timestamp": 1748613195.7336283
+    },
+    "C:\\Flashpoint\\Components\\playlist-foodgames": {
+        "path": "C:\\Flashpoint\\Components\\playlist-foodgames",
+        "name": "playlist-foodgames",
+        "size_mb": 4.57763671875e-05,
+        "classification": "Error",
+        "summary": "Error classifying: HTTPConnectionPool(host='localhost', port=11434): Read timed out. (read timeout=30)",
+        "keywords": [
+            "error"
+        ],
+        "scan_timestamp": 1748613227.7720656
+    },
+    "C:\\Flashpoint\\Components\\playlist-gamehousegames": {
+        "path": "C:\\Flashpoint\\Components\\playlist-gamehousegames",
+        "name": "playlist-gamehousegames",
+        "size_mb": 6.103515625e-05,
+        "classification": "Error",
+        "summary": "Error classifying: HTTPConnectionPool(host='localhost', port=11434): Read timed out. (read timeout=30)",
+        "keywords": [
+            "error"
+        ],
+        "scan_timestamp": 1748613259.8232005
+    },
+    "C:\\Flashpoint\\Components\\playlist-gotd2023": {
+        "path": "C:\\Flashpoint\\Components\\playlist-gotd2023",
+        "name": "playlist-gotd2023",
+        "size_mb": 5.14984130859375e-05,
+        "classification": "Error",
+        "summary": "Error classifying: HTTPConnectionPool(host='localhost', port=11434): Read timed out. (read timeout=30)",
+        "keywords": [
+            "error"
+        ],
+        "scan_timestamp": 1748613291.873913
+    },
+    "C:\\Flashpoint\\Components\\playlist-halloffame": {
+        "path": "C:\\Flashpoint\\Components\\playlist-halloffame",
+        "name": "playlist-halloffame",
+        "size_mb": 6.008148193359375e-05,
+        "classification": "JSON file containing a Flashpoint Playlist",
+        "summary": "A list of games included in the 'FlashpointSuperHallOfFame' playlist",
+        "keywords": [
+            "FlashpointSuperHallOfFame",
+            "playlist",
+            "json",
+            "games",
+            "data"
+        ],
+        "scan_timestamp": 1748613321.13804
+    },
+    "C:\\Flashpoint\\Components\\playlist-halloween": {
+        "path": "C:\\Flashpoint\\Components\\playlist-halloween",
+        "name": "playlist-halloween",
+        "size_mb": 5.054473876953125e-05,
+        "classification": "JSON file (Data configuration), associated with a playlist (HalloweenHaunts.json)",
+        "summary": "This file appears to contain a JSON data structure for configuring a Halloween-themed playlist called HalloweenHaunts.",
+        "keywords": [
+            "JSON",
+            "playlist",
+            "HalloweenHaunts",
+            "configuration",
+            "Data"
+        ],
+        "scan_timestamp": 1748613352.8699017
+    },
+    "C:\\Flashpoint\\Components\\playlist-java": {
+        "path": "C:\\Flashpoint\\Components\\playlist-java",
+        "name": "playlist-java",
+        "size_mb": 4.863739013671875e-05,
+        "classification": "Text file (JSON), Java-related",
+        "summary": "A JSON playlist file for HotJavaBeans in a Java context.",
+        "keywords": [
+            "JSON",
+            "Playlist",
+            "HotJavaBeans",
+            "Java"
+        ],
+        "scan_timestamp": 1748613377.0238423
+    },
+    "C:\\Flashpoint\\Components\\playlist-kongregatekongs": {
+        "path": "C:\\Flashpoint\\Components\\playlist-kongregatekongs",
+        "name": "playlist-kongregatekongs",
+        "size_mb": 4.9591064453125e-05,
+        "classification": "Data file (JSON), associated with a playlist from Kongregate",
+        "summary": "This file contains a JSON format of a Kongregate game playlist",
+        "keywords": [
+            "Kongregate",
+            "Playlist",
+            "JSON",
+            "Data",
+            "Games"
+        ],
+        "scan_timestamp": 1748613404.7158244
+    },
+    "C:\\Flashpoint\\Components\\playlist-molleindustria": {
+        "path": "C:\\Flashpoint\\Components\\playlist-molleindustria",
+        "name": "playlist-molleindustria",
+        "size_mb": 6.389617919921875e-05,
+        "classification": "JSON file (configuration data for a playlist of games in the Molleindustria's Recommendations)",
+        "summary": "A configuration file containing recommendations for games developed by Molleindustria",
+        "keywords": [
+            "JSON",
+            "playlist",
+            "Molleindustria",
+            "games",
+            "recommendations"
+        ],
+        "scan_timestamp": 1748613436.6074579
+    },
+    "C:\\Flashpoint\\Components\\playlist-pico8": {
+        "path": "C:\\Flashpoint\\Components\\playlist-pico8",
+        "name": "playlist-pico8",
+        "size_mb": 4.38690185546875e-05,
+        "classification": "Error",
+        "summary": "Error classifying: HTTPConnectionPool(host='localhost', port=11434): Read timed out. (read timeout=30)",
+        "keywords": [
+            "error"
+        ],
+        "scan_timestamp": 1748613468.6735308
+    },
+    "C:\\Flashpoint\\Components\\playlist-ragegames": {
+        "path": "C:\\Flashpoint\\Components\\playlist-ragegames",
+        "name": "playlist-ragegames",
+        "size_mb": 5.054473876953125e-05,
+        "classification": "Error",
+        "summary": "Error classifying: HTTPConnectionPool(host='localhost', port=11434): Read timed out. (read timeout=30)",
+        "keywords": [
+            "error"
+        ],
+        "scan_timestamp": 1748613500.7182066
+    },
+    "C:\\Flashpoint\\Components\\playlist-shockwave": {
+        "path": "C:\\Flashpoint\\Components\\playlist-shockwave",
+        "name": "playlist-shockwave",
+        "size_mb": 5.245208740234375e-05,
+        "classification": "Error",
+        "summary": "Error classifying: HTTPConnectionPool(host='localhost', port=11434): Read timed out. (read timeout=30)",
+        "keywords": [
+            "error"
+        ],
+        "scan_timestamp": 1748613532.7769876
+    }
+}

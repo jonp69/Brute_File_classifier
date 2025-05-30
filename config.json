@@ -1,0 +1,22 @@
+{
+    "llm_provider": "ollama",
+    "ollama_url": "http://localhost:11434/api/generate",
+    "lmstudio_url": "http://localhost:1234/v1/completions",
+    "model_name": "mistral",
+    "exclude_dirs": [
+        "Windows",
+        "Program Files",
+        "Program Files (x86)",
+        "$Recycle.Bin"
+    ],
+    "exclude_extensions": [
+        ".exe",
+        ".dll",
+        ".sys",
+        ".bin",
+        ".dat"
+    ],
+    "max_file_size_mb": 5,
+    "database_path": "file_database.json",
+    "embedding_model": "all-MiniLM-L6-v2"
+}
