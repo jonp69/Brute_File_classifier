@@ -18,5 +18,6 @@
     ],
     "max_file_size_mb": 5,
     "database_path": "file_database.json",
-    "embedding_model": "all-MiniLM-L6-v2"
+    "embedding_model": "all-MiniLM-L6-v2",
+    "offline_mode": true
 }
