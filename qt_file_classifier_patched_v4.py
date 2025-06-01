@@ -457,7 +457,8 @@ class ScannerThread(QThread):
     def cancel(self):
         """Cancel the scan operation"""
         self.is_cancelled = True
-          def sequential_scan_files(self):
+    
+    def sequential_scan_files(self):
         """Sequential scan implementation with improved filtering"""
         global scan_start_time, processed_files_count, total_files_count
         
@@ -1540,7 +1541,8 @@ class ScannerThread(QThread):
     def cancel(self):
         """Cancel the scan operation"""
         self.is_cancelled = True
-          def sequential_scan_files(self):
+    
+    def sequential_scan_files(self):
         """Sequential scan implementation with improved filtering"""
         global scan_start_time, processed_files_count, total_files_count
         
