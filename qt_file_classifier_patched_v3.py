@@ -481,7 +481,7 @@ class ScannerThread(QThread):
         
         # Full list of excluded extensions
         full_exclude_extensions = exclude_extensions + ADDITIONAL_EXCLUDE_EXTENSIONS
-          # Count files first
+        # Count files first
         self.update_progress.emit("Counting files...", 0, 0, 0)
         total_files = 0
         total_files_count = 0  # Reset global count
@@ -503,7 +503,8 @@ class ScannerThread(QThread):
                             continue
                         _, ext = os.path.splitext(file.lower())
                         if ext not in full_exclude_extensions:
-                            total_files += 1            except Exception as e:
+                            total_files += 1
+            except Exception as e:
                 print(f"Error counting files on {drive}: {e}")
         
         # Set total files count for estimations
@@ -611,6 +612,12 @@ class ScannerThread(QThread):
                                     save_database()
                                     print_file_stats()
                                     
+                                    # Save resume state every 200 files
+                                    if processed_files % 200 == 0:
+                                        global processed_files_count
+                                        processed_files_count = processed_files
+                                        save_resume_state(self.drive_paths, self.scan_mode, processed_files, total_files)
+                                    
                             except Exception as e:
                                 print(f"Error processing file {file_path}: {e}")
                                 
@@ -623,261 +630,6 @@ class ScannerThread(QThread):
                 print(f"Error scanning drive {drive}: {e}")
         
         # Final save of the database
-        save_database()
-        print_file_stats()  # Print final stats
-        self.update_progress.emit("Scan complete", 1.0, processed_files, total_files)
-        self.scan_complete.emit()
-        
-    def process_file_worker(self):
-        """Worker thread for parallel processing files"""
-        self.worker_count += 1
-        offline_mode = self.scan_mode in ("offline", "turbo")
-        
-        try:
-            while True:
-                got_item = False  # Initialize got_item outside the try block
-                try:
-                    # Get a file from the queue with a timeout
-                    file_info = self.file_queue.get(timeout=0.5)
-                    
-                    # Mark that we need to call task_done() for this item
-                    got_item = True
-                    
-                    if file_info is None:  # Sentinel value
-                        # Mark the sentinel task as done
-                        self.file_queue.task_done()
-                        break
-                        
-                    file_path = file_info["path"]
-                    file_name = file_info["name"]
-                    file_size_mb = file_info["size_mb"]
-                    ext = file_info["extension"]
-                    
-                    # Get file preview
-                    content_preview = get_file_preview(file_path)
-                    
-                    # Determine if we're in offline mode
-                    if offline_mode:
-                        # Use simple heuristic classification instead of LLM
-                        file_ext = ext[1:] if ext else "unknown"  # Remove the dot
-                        classification = f"{file_ext.upper()} file"
-                        
-                        classification_result = {
-                            "classification": classification,
-                            "summary": f"File indexed in offline mode ({file_size_mb:.2f} MB)",
-                            "keywords": [file_ext if ext else "unknown"]
-                        }
-                    else:
-                        # Classify with LLM
-                        classification_result = classify_file_with_llm(file_path, content_preview)
-                    
-                    # Store in database (thread-safe)
-                    with db_lock:
-                        file_database[file_path] = {
-                            "path": file_path,
-                            "name": file_name,
-                            "size_mb": file_size_mb,
-                            "classification": classification_result.get("classification", "Unknown"),
-                            "summary": classification_result.get("summary", "No summary available"),
-                            "keywords": classification_result.get("keywords", []),
-                            "scan_timestamp": time.time(),
-                            "offline_indexed": offline_mode
-                        }
-                    
-                    # Update file type statistics
-                    self.update_file_stats(ext)
-                    
-                    # Mark task as done for this item
-                    self.file_queue.task_done()
-                    
-                except queue.Empty:
-                    # Check if scanning is complete and queue is empty
-                    if self.scan_complete_flag and self.file_queue.empty():
-                        break
-                    # Otherwise just continue waiting
-                    continue
-                    
-                except Exception as e:
-                    print(f"Error processing file: {e}")
-                    
-                    # If we got an item before the error, mark it as done
-                    if got_item:
-                        self.file_queue.task_done()
-                    
-        finally:
-            self.worker_count -= 1
-            
-    def parallel_scan_files(self):
-        """Parallel scan implementation using worker threads with improved filtering"""
-        config = load_config()
-        exclude_dirs = config["exclude_dirs"]
-        exclude_extensions = config["exclude_extensions"]
-        max_file_size_mb = config["max_file_size_mb"]
-        offline_mode = self.scan_mode in ("offline", "turbo")
-        
-        # Save offline mode status to config
-        if offline_mode != config.get("offline_mode", False):
-            config["offline_mode"] = offline_mode
-            save_config(config)
-            
-        # Extended list of excluded directories
-        full_exclude_dirs = exclude_dirs + ADDITIONAL_EXCLUDE_DIRS
-        
-        # Full list of excluded extensions
-        full_exclude_extensions = exclude_extensions + ADDITIONAL_EXCLUDE_EXTENSIONS
-            
-        # Reset state
-        self.scan_complete_flag = False
-        
-        # Count total files
-        self.update_progress.emit("Counting files...", 0, 0, 0)
-        total_files = 0
-        
-        for drive in self.drive_paths:
-            try:
-                for root, dirs, files in os.walk(drive):
-                    if self.is_cancelled:
-                        return
-                        
-                    # Improved directory filtering - skip excluded directories or hidden directories
-                    dirs[:] = [d for d in dirs if not any(ex.lower() == d.lower() for ex in full_exclude_dirs) 
-                              and not d.startswith('.')]
-                    
-                    # Count files that meet criteria
-                    for file in files:
-                        if file.startswith('.'):  # Skip hidden files
-                            continue
-                        _, ext = os.path.splitext(file.lower())
-                        if ext not in full_exclude_extensions:
-                            total_files += 1
-            except Exception as e:
-                print(f"Error counting files on {drive}: {e}")
-        
-        # Start worker threads
-        num_workers = min(os.cpu_count() or 4, 16 if offline_mode else 8)
-        print(f"Starting {num_workers} worker threads")
-        workers = []
-        for _ in range(num_workers):
-            worker = threading.Thread(target=self.process_file_worker)
-            worker.daemon = True
-            worker.start()
-            workers.append(worker)
-        
-        # Process files
-        processed_files = 0
-        for drive in self.drive_paths:
-            try:
-                self.update_progress.emit(f"Scanning {drive}", processed_files / total_files if total_files > 0 else 0,
-                                        processed_files, total_files)
-                
-                for root, dirs, files in os.walk(drive):
-                    if self.is_cancelled:
-                        break
-                        
-                    # Skip excluded directories with improved filtering
-                    dirs[:] = [d for d in dirs if not any(ex.lower() == d.lower() for ex in full_exclude_dirs) 
-                              and not d.startswith('.')]
-                    
-                    for file in files:
-                        if self.is_cancelled:
-                            break
-                            
-                        if file.startswith('.'):  # Skip hidden files
-                            continue
-                            
-                        file_path = os.path.join(root, file)
-                        _, ext = os.path.splitext(file.lower())
-                        
-                        if ext not in full_exclude_extensions:
-                            try:
-                                # Update file type statistics
-                                self.update_file_stats(ext)
-                                
-                                # Skip if already in database and not too old - using thread-safe approach
-                                skip_file = False
-                                with db_lock:
-                                    if file_path in file_database:
-                                        file_info = file_database[file_path]
-                                        try:
-                                            last_modified_time = os.path.getmtime(file_path)
-                                            last_scan_time = file_info.get("scan_timestamp", 0)
-                                            
-                                            # Skip if file hasn't been modified since last scan
-                                            if last_modified_time <= last_scan_time:
-                                                skip_file = True
-                                        except:
-                                            # If can't get file time, assume it needs scanning
-                                            pass
-                                
-                                if skip_file:
-                                    processed_files += 1
-                                    self.update_progress.emit(f"Scanning {drive}", 
-                                                           processed_files / total_files if total_files > 0 else 0,
-                                                           processed_files, total_files)
-                                    continue
-                                
-                                # Check file size
-                                try:
-                                    file_size_mb = os.path.getsize(file_path) / (1024 * 1024)
-                                    if file_size_mb > max_file_size_mb:
-                                        with db_lock:
-                                            file_database[file_path] = {
-                                                "path": file_path,
-                                                "name": file,
-                                                "size_mb": file_size_mb,
-                                                "classification": "Large File",
-                                                "summary": f"File too large to process ({file_size_mb:.2f} MB)",
-                                                "keywords": ["large_file"],
-                                                "scan_timestamp": time.time()
-                                            }
-                                        processed_files += 1
-                                        self.update_progress.emit(f"Scanning {drive}", 
-                                                               processed_files / total_files if total_files > 0 else 0,
-                                                               processed_files, total_files)
-                                        continue
-                                except:
-                                    # If can't get file size, use a reasonable estimate
-                                    file_size_mb = 0.1
-                                
-                                # Add file to processing queue
-                                self.file_queue.put({
-                                    "path": file_path,
-                                    "name": file,
-                                    "size_mb": file_size_mb,
-                                    "extension": ext
-                                })
-                                
-                                # Periodically save database and print stats
-                                if processed_files % 100 == 0:
-                                    save_database()
-                                    print_file_stats()
-                                    
-                            except Exception as e:
-                                print(f"Error processing file {file_path}: {e}")
-                                
-                            finally:
-                                processed_files += 1
-                                self.update_progress.emit(f"Scanning {drive}", 
-                                                      processed_files / total_files if total_files > 0 else 0,
-                                                      processed_files, total_files)
-            except Exception as e:
-                print(f"Error scanning drive {drive}: {e}")
-        
-        # Signal that we're done adding files to the queue
-        self.scan_complete_flag = True
-        
-        # Add sentinel values to signal workers to stop
-        for _ in range(num_workers):
-            self.file_queue.put(None)
-            
-        # Wait for queue to be processed
-        self.update_progress.emit("Finalizing classification...", 0.99, processed_files, total_files)
-        
-        # Wait for all workers to finish
-        for worker in workers:
-            worker.join(timeout=0.5)
-            
-        # Save final database
         save_database()
         print_file_stats()  # Print final stats
         self.update_progress.emit("Scan complete", 1.0, processed_files, total_files)
@@ -1394,3 +1146,610 @@ def start_app():
 
 if __name__ == "__main__":
     start_app()
+
+# Configuration
+CONFIG_FILE = "config.json"
+RESUME_FILE = "resume_scan.json"  # File to store resume information
+DEFAULT_CONFIG = {
+    "llm_provider": "ollama",  # or "lmstudio"
+    "ollama_url": "http://localhost:11434/api/generate",
+    "lmstudio_url": "http://localhost:1234/v1/completions",
+    "model_name": "mistral",
+    "exclude_dirs": ["Windows", "Program Files", "Program Files (x86)", "$Recycle.Bin"],
+    "exclude_extensions": [".exe", ".dll", ".sys", ".bin", ".dat"],
+    "max_file_size_mb": 5,
+    "database_path": "file_database.json",
+    "embedding_model": "all-MiniLM-L6-v2",
+    "offline_mode": False,
+    "request_timeout": 60,
+    "max_retries": 2
+}
+
+# Additional directories to exclude to avoid finding too many files
+ADDITIONAL_EXCLUDE_DIRS = [
+    "System Volume Information", "Windows.old", "Recovery", 
+    "ProgramData", "AppData", "venv", "node_modules", 
+    "$WINDOWS.~BT", "$Windows.~WS", "$SysReset", "Temp", "temp"
+]
+
+# Additional extensions to exclude
+ADDITIONAL_EXCLUDE_EXTENSIONS = [
+    ".tmp", ".bak", ".log", ".cache", ".wim", ".swp", ".ini", 
+    ".idx", ".tlb", ".mui", ".msi", ".pdb", ".ilk", ".ncb", 
+    ".obj", ".res", ".pch", ".idb", ".suo"
+]
+
+# Global variables
+embedding_model = None
+
+def load_config():
+    """Load configuration from file or create default"""
+    if os.path.exists(CONFIG_FILE):
+        try:
+            with open(CONFIG_FILE, "r") as f:
+                return json.load(f)
+        except Exception as e:
+            print(f"Error loading config: {e}")
+            return DEFAULT_CONFIG
+    else:
+        save_config(DEFAULT_CONFIG)
+        return DEFAULT_CONFIG
+
+def save_config(config):
+    """Save configuration to file"""
+    with open(CONFIG_FILE, "w") as f:
+        json.dump(config, f, indent=4)
+
+def load_database():
+    """Load file database from disk"""
+    global file_database
+    config = load_config()
+    if os.path.exists(config["database_path"]):
+        try:
+            with open(config["database_path"], "r", encoding="utf-8") as f:
+                with db_lock:
+                    file_database = json.load(f)
+        except Exception as e:
+            print(f"Error loading database: {e}")
+            file_database = {}
+    else:
+        file_database = {}
+
+def save_database():
+    """Save database to disk - thread safe implementation"""
+    # Create a copy of the database to prevent modification during saving
+    db_copy = None
+    with db_lock:
+        db_copy = dict(file_database)
+    
+    config = load_config()
+    with open(config["database_path"], "w", encoding="utf-8") as f:
+        json.dump(db_copy, f, indent=4, ensure_ascii=False)
+
+def get_available_drives():
+    """Get all available drives on the system"""
+    if os.name == "nt":  # Windows
+        drives = []
+        for letter in string.ascii_uppercase:
+            if os.path.exists(f"{letter}:\\"):
+                drives.append(f"{letter}:\\")
+        return drives
+    else:  # Unix/Linux/Mac
+        return ["/"]
+
+def get_file_preview(file_path):
+    """Get a preview of the file content"""
+    try:
+        _, ext = os.path.splitext(file_path.lower())
+        # Binary files
+        if ext in [".pdf", ".doc", ".docx", ".xls", ".xlsx", ".zip", ".rar"]:
+            return f"[Binary file with extension {ext}]"
+            
+        # Get text preview, limit to 1500 characters
+        with open(file_path, "r", encoding="utf-8", errors="ignore") as f:
+            return f.read(1500)
+    except Exception as e:
+        return f"[Error reading file: {str(e)}]"
+
+def classify_file_with_llm(file_path, content_preview):
+    """Classify and summarize a file using a local LLM"""
+    config = load_config()
+    
+    if len(content_preview.strip()) == 0:
+        return {
+            "classification": "Unknown",
+            "summary": "Empty or unreadable file",
+            "keywords": []
+        }
+    
+    # Limit content preview length to reduce LLM load
+    max_preview_length = 1000
+    
+    prompt = f"""Please analyze this file content preview and provide:
+1. Classification (document type, programming language, etc.)
+2. Brief summary (1-2 sentences)
+3. Keywords (comma-separated)
+
+File path: {file_path}
+Content preview:
+```
+{content_preview[:max_preview_length]}
+```
+
+Respond in JSON format:
+{{
+    "classification": "your classification",
+    "summary": "your summary",
+    "keywords": ["keyword1", "keyword2", "..."]
+}}"""
+
+    try:
+        # Get timeout settings from config or use defaults
+        timeout = config.get("request_timeout", 60)  # Extended default timeout
+        max_retries = config.get("max_retries", 2)   # Number of retries on failure
+        
+        for retry in range(max_retries + 1):
+            try:
+                if config["llm_provider"] == "ollama":
+                    # Add options to reduce model memory usage and speed up response
+                    response = requests.post(
+                        config["ollama_url"],
+                        json={
+                            "model": config["model_name"],
+                            "prompt": prompt,
+                            "stream": False,
+                            # Add options to optimize for lower memory usage
+                            "options": {
+                                "num_ctx": 1024,     # Smaller context window
+                                "num_thread": 4      # Limit number of threads
+                            }
+                        },
+                        timeout=timeout
+                    )
+                    if response.status_code == 200:
+                        result = response.json()
+                        # Extract JSON from the response
+                        text = result.get("response", "")
+                        json_match = re.search(r'\{.*\}', text, re.DOTALL)
+                        if json_match:
+                            json_str = json_match.group(0)
+                            try:
+                                return json.loads(json_str)
+                            except:
+                                pass
+                    else:
+                        print(f"LLM request failed with status code: {response.status_code}")
+                
+                elif config["llm_provider"] == "lmstudio":
+                    response = requests.post(
+                        config["lmstudio_url"],
+                        json={
+                            "model": config["model_name"],
+                            "prompt": prompt,
+                            "max_tokens": 500,
+                            "temperature": 0.1
+                        },
+                        timeout=timeout
+                    )
+                    if response.status_code == 200:
+                        result = response.json()
+                        text = result.get("choices", [{}])[0].get("text", "")
+                        json_match = re.search(r'\{.*\}', text, re.DOTALL)
+                        if json_match:
+                            json_str = json_match.group(0)
+                            try:
+                                return json.loads(json_str)
+                            except:
+                                pass
+                
+                # If we reach this point, either the request failed or JSON parsing failed
+                # Break out of retry loop if this is the last attempt
+                if retry == max_retries:
+                    break
+                
+                # Wait before retrying with exponential backoff
+                backoff_time = (retry + 1) * 2
+                time.sleep(backoff_time)
+            
+            except requests.exceptions.Timeout:
+                if retry == max_retries:
+                    # If we've exhausted retries, return an error
+                    break
+                # Wait before retrying with exponential backoff
+                backoff_time = (retry + 1) * 2
+                time.sleep(backoff_time)
+                
+            except Exception as e:
+                print(f"Error in LLM request: {e}")
+                if retry == max_retries:
+                    break
+                time.sleep(retry + 1)
+    
+    except Exception as e:
+        print(f"Error classifying file: {e}")
+    
+    # Default response if all else fails
+    return {
+        "classification": "Unknown",
+        "summary": "Failed to classify with LLM",
+        "keywords": ["error", "classification-failed"]
+    }
+
+def init_embedding_model():
+    """Initialize the embedding model for vector search"""
+    # Placeholder that will be implemented if needed
+    pass
+    
+def search_files_by_extension(ext):
+    """Search files by extension"""
+    results = []
+    with db_lock:
+        for path, info in file_database.items():
+            if path.lower().endswith(ext.lower()):
+                results.append((info, 1.0, "extension"))
+    return sorted(results, key=lambda x: x[1], reverse=True)
+    
+def search_files_by_name(query):
+    """Search files by name"""
+    query = query.lower()
+    results = []
+    with db_lock:
+        for path, info in file_database.items():
+            name = info.get("name", "").lower()
+            if query in name:
+                # Score based on position (higher if it appears earlier)
+                position = name.find(query)
+                score = 1.0 - (position / len(name)) * 0.5
+                results.append((info, score, "name"))
+    return sorted(results, key=lambda x: x[1], reverse=True)
+    
+def search_files_by_content(query):
+    """Search files by content match in summary"""
+    query = query.lower()
+    results = []
+    with db_lock:
+        for path, info in file_database.items():
+            summary = info.get("summary", "").lower()
+            classification = info.get("classification", "").lower()
+            keywords = " ".join(info.get("keywords", [])).lower()
+            
+            # Check for matches in different fields with different weights
+            summary_match = query in summary
+            class_match = query in classification
+            keyword_match = query in keywords
+            
+            if summary_match or class_match or keyword_match:
+                score = 0.0
+                # Weight matches
+                if summary_match:
+                    score += 0.6
+                if class_match:
+                    score += 0.3
+                if keyword_match:
+                    score += 0.7
+                    
+                results.append((info, min(score, 1.0), "content"))
+                
+    return sorted(results, key=lambda x: x[1], reverse=True)
+
+def search_files_by_vector(query):
+    """Search files by vector similarity - placeholder"""
+    # Return empty list since we're not implementing vector search in minimal version
+    return []
+
+# Function to print file type statistics
+def print_file_stats():
+    """Print statistics about processed files by type"""
+    global last_stats_time, file_type_stats, scan_start_time, processed_files_count, total_files_count
+    current_time = time.time()
+    
+    # Only print stats every STATS_INTERVAL seconds
+    if current_time - last_stats_time < STATS_INTERVAL:
+        return
+        
+    last_stats_time = current_time
+    
+    # Calculate time estimate
+    time_estimate = ""
+    if processed_files_count > 0 and total_files_count > 0 and scan_start_time > 0:
+        elapsed_time = current_time - scan_start_time
+        if processed_files_count < total_files_count:
+            progress_ratio = processed_files_count / total_files_count
+            if progress_ratio > 0:
+                estimated_total_time = elapsed_time / progress_ratio
+                remaining_time = estimated_total_time - elapsed_time
+                
+                # Convert to hours, minutes, seconds
+                hours, remainder = divmod(remaining_time, 3600)
+                minutes, seconds = divmod(remainder, 60)
+                
+                if hours > 0:
+                    time_estimate = f"Estimated time remaining: {int(hours)}h {int(minutes)}m {int(seconds)}s"
+                elif minutes > 0:
+                    time_estimate = f"Estimated time remaining: {int(minutes)}m {int(seconds)}s"
+                else:
+                    time_estimate = f"Estimated time remaining: {int(seconds)}s"
+    
+    # Print stats
+    print("\n--- File Processing Statistics ---")
+    print(f"Total unique file types: {len(file_type_stats)}")
+    print(f"Total files processed: {sum(file_type_stats.values())}")
+    if time_estimate:
+        print(time_estimate)
+    print(f"Progress: {processed_files_count}/{total_files_count} files ({(processed_files_count/total_files_count*100):.1f}% complete)")
+    
+    # Sort by count (descending)
+    sorted_stats = sorted(file_type_stats.items(), key=lambda x: x[1], reverse=True)
+    for ext, count in sorted_stats[:10]:  # Show top 10 file types
+        print(f"{ext}: {count} files")
+    
+    if len(sorted_stats) > 10:
+        print(f"... and {len(sorted_stats) - 10} more file types ...")
+    print("-------------------------------\n")
+
+# Worker thread for scanning files
+class ScannerThread(QThread):
+    update_progress = pyqtSignal(str, float, int, int)
+    scan_complete = pyqtSignal()
+    
+    def __init__(self, drive_paths, scan_mode="standard"):
+        super().__init__()
+        self.drive_paths = drive_paths
+        self.scan_mode = scan_mode
+        self.is_cancelled = False
+        
+        # Initialize thread locks and queues for parallel processing
+        self.results_lock = threading.Lock()
+        self.file_queue = queue.Queue(maxsize=100)
+        self.worker_count = 0
+        self.scan_complete_flag = False
+        
+        # Reset file stats
+        global file_type_stats, last_stats_time
+        file_type_stats = {}
+        last_stats_time = time.time()
+    
+    def update_file_stats(self, ext):
+        """Update file type statistics and print periodic updates"""
+        global file_type_stats
+        
+        # Update file type statistics
+        file_ext = ext.lower() if ext else "no_extension"
+        with db_lock:  # Using db_lock to protect the file_type_stats dictionary
+            if file_ext in file_type_stats:
+                file_type_stats[file_ext] += 1
+            else:
+                file_type_stats[file_ext] = 1
+                
+        # Print stats periodically
+        print_file_stats()
+        
+    def run(self):
+        """Execute the scan based on the selected mode"""
+        if self.scan_mode in ("parallel", "turbo"):
+            self.parallel_scan_files()
+        else:
+            self.sequential_scan_files()
+            
+    def cancel(self):
+        """Cancel the scan operation"""
+        self.is_cancelled = True
+          def sequential_scan_files(self):
+        """Sequential scan implementation with improved filtering"""
+        global scan_start_time, processed_files_count, total_files_count
+        
+        # Reset time estimation variables
+        scan_start_time = time.time()
+        processed_files_count = 0
+        
+        config = load_config()
+        exclude_dirs = config["exclude_dirs"]
+        exclude_extensions = config["exclude_extensions"]
+        max_file_size_mb = config["max_file_size_mb"]
+        offline_mode = self.scan_mode == "offline" or config.get("offline_mode", False)
+        
+        # Save offline mode status to config
+        if offline_mode != config.get("offline_mode", False):
+            config["offline_mode"] = offline_mode
+            save_config(config)
+        
+        # Extended list of excluded directories
+        full_exclude_dirs = exclude_dirs + ADDITIONAL_EXCLUDE_DIRS
+        
+        # Full list of excluded extensions
+        full_exclude_extensions = exclude_extensions + ADDITIONAL_EXCLUDE_EXTENSIONS
+        # Count files first
+        self.update_progress.emit("Counting files...", 0, 0, 0)
+        total_files = 0
+        total_files_count = 0  # Reset global count
+        
+        for drive in self.drive_paths:
+            try:
+                for root, dirs, files in os.walk(drive):
+                    if self.is_cancelled:
+                        return
+                    
+                    # Improved directory filtering - skip excluded directories or hidden directories
+                    # Case-insensitive check for excluded directories
+                    dirs[:] = [d for d in dirs if not any(ex.lower() == d.lower() for ex in full_exclude_dirs) 
+                              and not d.startswith('.')]
+                    
+                    # Count files that meet criteria
+                    for file in files:
+                        if file.startswith('.'):  # Skip hidden files
+                            continue
+                        _, ext = os.path.splitext(file.lower())
+                        if ext not in full_exclude_extensions:
+                            total_files += 1
+            except Exception as e:
+                print(f"Error counting files on {drive}: {e}")
+        
+        # Set total files count for estimations
+        total_files_count = total_files
+        
+        # Process files
+        processed_files = 0
+        processed_files_count = 0
+        for drive in self.drive_paths:
+            try:
+                self.update_progress.emit(f"Scanning {drive}", processed_files / total_files if total_files > 0 else 0, 
+                                         processed_files, total_files)
+                
+                for root, dirs, files in os.walk(drive):
+                    if self.is_cancelled:
+                        return
+                        
+                    # Skip excluded directories with improved filtering
+                    dirs[:] = [d for d in dirs if not any(ex.lower() == d.lower() for ex in full_exclude_dirs) 
+                              and not d.startswith('.')]
+                    
+                    for file in files:
+                        if self.is_cancelled:
+                            return
+                            
+                        if file.startswith('.'):  # Skip hidden files
+                            continue
+                            
+                        file_path = os.path.join(root, file)
+                        _, ext = os.path.splitext(file.lower())
+                        
+                        if ext not in full_exclude_extensions:
+                            try:
+                                # Update file type statistics
+                                self.update_file_stats(ext)
+                                
+                                # Skip if already in database and not too old
+                                with db_lock:
+                                    already_in_db = file_path in file_database
+                                    if already_in_db:
+                                        file_info = file_database[file_path]
+                                        last_modified_time = os.path.getmtime(file_path)
+                                        last_scan_time = file_info.get("scan_timestamp", 0)
+                                        
+                                        # Skip if file hasn't been modified since last scan
+                                        if last_modified_time <= last_scan_time:
+                                            processed_files += 1
+                                            self.update_progress.emit(f"Scanning {drive}", 
+                                                                  processed_files / total_files if total_files > 0 else 0,
+                                                                  processed_files, total_files)
+                                            continue
+                                
+                                # Check file size
+                                file_size_mb = os.path.getsize(file_path) / (1024 * 1024)
+                                if file_size_mb > max_file_size_mb:
+                                    with db_lock:
+                                        file_database[file_path] = {
+                                            "path": file_path,
+                                            "name": file,
+                                            "size_mb": file_size_mb,
+                                            "classification": "Large File",
+                                            "summary": f"File too large to process ({file_size_mb:.2f} MB)",
+                                            "keywords": ["large_file"],
+                                            "scan_timestamp": time.time()
+                                        }
+                                    
+                                    processed_files += 1
+                                    self.update_progress.emit(f"Scanning {drive}", 
+                                                           processed_files / total_files if total_files > 0 else 0,
+                                                           processed_files, total_files)
+                                    continue
+                                
+                                # Get file preview
+                                content_preview = get_file_preview(file_path)
+                                
+                                # Determine if we're in offline mode
+                                if offline_mode:
+                                    # Use simple heuristic classification instead of LLM
+                                    file_ext = ext[1:] if ext else "unknown"  # Remove the dot
+                                    classification = f"{file_ext.upper()} file"
+                                    
+                                    classification_result = {
+                                        "classification": classification,
+                                        "summary": f"File indexed in offline mode ({file_size_mb:.2f} MB)",
+                                        "keywords": [file_ext if ext else "unknown"]
+                                    }
+                                else:
+                                    # Classify with LLM
+                                    classification_result = classify_file_with_llm(file_path, content_preview)
+                                  # Store in database with thread safety
+                                with db_lock:
+                                    file_database[file_path] = {
+                                        "path": file_path,
+                                        "name": file,
+                                        "size_mb": file_size_mb,
+                                        "classification": classification_result.get("classification", "Unknown"),
+                                        "summary": classification_result.get("summary", "No summary available"),
+                                        "keywords": classification_result.get("keywords", []),
+                                        "scan_timestamp": time.time(),
+                                        "offline_indexed": offline_mode
+                                    }
+                                
+                                # Periodically save database and print stats
+                                if processed_files % 100 == 0:
+                                    save_database()
+                                    print_file_stats()
+                                    
+                                    # Save resume state every 200 files
+                                    if processed_files % 200 == 0:
+                                        global processed_files_count
+                                        processed_files_count = processed_files
+                                        save_resume_state(self.drive_paths, self.scan_mode, processed_files, total_files)
+                                    
+                            except Exception as e:
+                                print(f"Error processing file {file_path}: {e}")
+                                
+                            finally:
+                                processed_files += 1
+                                self.update_progress.emit(f"Scanning {drive}", 
+                                                       processed_files / total_files if total_files > 0 else 0,
+                                                       processed_files, total_files)
+            except Exception as e:
+                print(f"Error scanning drive {drive}: {e}")
+        
+        # Final save of the database
+        save_database()
+        print_file_stats()  # Print final stats
+        self.update_progress.emit("Scan complete", 1.0, processed_files, total_files)
+        self.scan_complete.emit()
+
+
+# Resume state management functions
+
+def save_resume_state(drive_paths, scan_mode, processed_count, total_count):
+    """Save the current scan state for possible resume later"""
+    try:
+        resume_data = {
+            "drive_paths": drive_paths,
+            "scan_mode": scan_mode,
+            "processed_files_count": processed_count,
+            "total_files_count": total_count,
+            "timestamp": time.time()
+        }
+        
+        with open(RESUME_FILE, "w") as f:
+            json.dump(resume_data, f)
+    except Exception as e:
+        print(f"Error saving resume state: {e}")
+
+def load_resume_state():
+    """Load the previous scan state if available"""
+    try:
+        if os.path.exists(RESUME_FILE):
+            with open(RESUME_FILE, "r") as f:
+                resume_data = json.load(f)
+            
+            # Check if the resume data is recent (less than 24 hours old)
+            if time.time() - resume_data.get("timestamp", 0) < 86400:  # 24 hours in seconds
+                return resume_data
+    except Exception as e:
+        print(f"Error loading resume state: {e}")
+    
+    return None
+
+def clear_resume_state():
+    """Clear the resume state file when scan completes"""
+    try:
+        if os.path.exists(RESUME_FILE):
+            os.remove(RESUME_FILE)
+    except Exception as e:
+        print(f"Error clearing resume state: {e}")
